@@ -18,7 +18,9 @@ jobs:
         dotnet-version: 6.0.x
     - name: .NET test
       run: dotnet test src/DotNetTestResultsPOC.Tests/DotNetTestResultsPOC.Tests.csproj -c Release  -l:"trx;LogFileName=${GITHUB_WORKSPACE}/TestOutput.xml"
-    - run: ls ${GITHUB_WORKSPACE}/
+    - run: |
+        ls ${GITHUB_WORKSPACE}/
+        echo ${GITHUB_WORKSPACE}
     - name: Output results
       #if: runner.OS == 'Linux'
       shell: pwsh
