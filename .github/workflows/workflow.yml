@@ -17,13 +17,13 @@ jobs:
       with:
         dotnet-version: 6.0.x
     - name: .NET test
-      run: dotnet test src/DotNetTestResultsPOC.Tests/DotNetTestResultsPOC.Tests.csproj -c Release  -l:trx;LogFileName=${GITHUB_WORKSPACE}/TestOutput.xml
-    - run: ls TestResults/
+      run: dotnet test src/DotNetTestResultsPOC.Tests/DotNetTestResultsPOC.Tests.csproj -c Release  -l:"trx;LogFileName=${GITHUB_WORKSPACE}/TestOutput.xml"
+    - run: ls ${GITHUB_WORKSPACE}/
     - name: Output results
       #if: runner.OS == 'Linux'
       shell: pwsh
       run: |
-        [xml]$result = Get-Content -Path TestResults/*.trx
+        [xml]$result = Get-Content -Path ${GITHUB_WORKSPACE}/TestOutput.xml
         $result.TestRun.ResultSummary.Counters.passed
         $result.TestRun.ResultSummary.Counters.failed
         echo "Test results" >> $GITHUB_STEP_SUMMARY
