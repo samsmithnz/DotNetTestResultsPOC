@@ -1,4 +1,4 @@
-name: CI/CD
+﻿name: CI/CD
 on:
   push:
     branches:
@@ -30,6 +30,6 @@ jobs:
         $result.TestRun.ResultSummary.Counters.failed
         echo "Test results" >> $GITHUB_STEP_SUMMARY
         echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
-        echo "- Total: $(result.TestRun.ResultSummary.Counters.total)" >> $GITHUB_STEP_SUMMARY
-        echo "- Passed:"$(result.TestRun.ResultSummary.Counters.passed) >> $GITHUB_STEP_SUMMARY
-        echo "- Failed: $(result.TestRun.ResultSummary.Counters.failed)" >> $GITHUB_STEP_SUMMARY
+        echo "- Total: $($result.TestRun.ResultSummary.Counters.total)" >> $GITHUB_STEP_SUMMARY
+        echo "- Passed ✅: $($result.TestRun.ResultSummary.Counters.passed)"" >> $GITHUB_STEP_SUMMARY
+        echo "- Failed ❌: $($result.TestRun.ResultSummary.Counters.failed)" >> $GITHUB_STEP_SUMMARY
