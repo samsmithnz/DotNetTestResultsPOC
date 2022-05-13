@@ -9,28 +9,25 @@ on:
 jobs:
   build:
     name: Build job
-    runs-on: windows-latest
-    outputs:
-      Version: ${{ steps.gitversion.outputs.SemVer }}
-      CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}
+    runs-on: ubuntu-latest
     steps:
     - uses: actions/checkout@v2
-      with:
-        fetch-depth: 0
-    - name: Setup GitVersion
-      uses: gittools/actions/gitversion/setup@v0.9.11
-      with:
-        versionSpec: 5.x
-    - name: Determine Version
-      id: gitversion
-      uses: gittools/actions/gitversion/execute@v0.9.11
-    - name: Display GitVersion outputs
-      run: |
-        echo "Version: ${{ steps.gitversion.outputs.SemVer }}"
-        echo "CommitsSinceVersionSource: ${{ steps.gitversion.outputs.CommitsSinceVersionSource }}"
     - name: Setup .NET
       uses: actions/setup-dotnet@v1
       with:
         dotnet-version: 6.0.x
     - name: .NET test
-      run: dotnet test src/DotNetTestResultsPOC.Tests/DotNetTestResultsPOC.Tests.csproj -c Release
+      run: dotnet test src/DotNetTestResultsPOC.Tests/DotNetTestResultsPOC.Tests.csproj -c Release  -l:trx;LogFileName=src/TestOutput.xml
+    - run: ls src/
+    - name: Output results
+      #if: runner.OS == 'Linux'
+      shell: pwsh
+      run: |
+        [xml]$result = Get-Content -Path src/TestOutput.xml
+        $result.TestRun.ResultSummary.Counters.passed
+        $result.TestRun.ResultSummary.Counters.failed
+        echo "Test results" >> $GITHUB_STEP_SUMMARY
+        echo "" >> $GITHUB_STEP_SUMMARY # this is a blank line
+        echo "- Total: $(result.TestRun.ResultSummary.Counters.total)" >> $GITHUB_STEP_SUMMARY
+        echo "- Passed:"$(result.TestRun.ResultSummary.Counters.passed) >> $GITHUB_STEP_SUMMARY
+        echo "- Failed: $(result.TestRun.ResultSummary.Counters.failed)" >> $GITHUB_STEP_SUMMARY
