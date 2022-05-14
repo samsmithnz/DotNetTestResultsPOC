@@ -18,12 +18,7 @@ jobs:
         dotnet-version: 6.0.x
     - name: .NET test
       run: dotnet test src/DotNetTestResultsPOC.Tests/DotNetTestResultsPOC.Tests.csproj -c Release  -l:"trx;LogFileName=${{ github.workspace }}/TestOutput.xml"
-    - run: |
-        ls ${{ github.workspace }}/
-        echo ${{ github.workspace }}
     - name: Output results
-      #if: runner.OS == 'Linux'
-      #if: 0 == 1
       shell: pwsh
       run: |
         [xml]$result = Get-Content -Path ${{ github.workspace }}/TestOutput.xml
@@ -34,13 +29,3 @@ jobs:
         echo "- Total: $($result.TestRun.ResultSummary.Counters.total)" >> $env:GITHUB_STEP_SUMMARY
         echo "- Passed ✅: $($result.TestRun.ResultSummary.Counters.passed)" >> $env:GITHUB_STEP_SUMMARY
         echo "- Failed ❌: $($result.TestRun.ResultSummary.Counters.failed)" >> $env:GITHUB_STEP_SUMMARY
-
-    - name: Generate list using Markdown
-      if: 0 == 1
-      run: |
-        echo "This is the lead in sentence for the list" >> $env:GITHUB_STEP_SUMMARY
-        echo "" >> $env:GITHUB_STEP_SUMMARY # this is a blank line
-        echo "- Lets add a bullet point" >> $env:GITHUB_STEP_SUMMARY
-        echo "- Lets add a second bullet point" >> $env:GITHUB_STEP_SUMMARY
-        echo "- How about a third one?" >> $env:GITHUB_STEP_SUMMARY
-
