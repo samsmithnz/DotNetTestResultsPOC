@@ -30,6 +30,6 @@ jobs:
         echo "- Total: $($result.TestRun.ResultSummary.Counters.total)" >> $env:GITHUB_STEP_SUMMARY
         echo "- Passed ✅: $($result.TestRun.ResultSummary.Counters.passed)" >> $env:GITHUB_STEP_SUMMARY
         echo "- Failed ❌: $($result.TestRun.ResultSummary.Counters.failed)" >> $env:GITHUB_STEP_SUMMARY
-    - uses: samsmithnz/DotNetTestResultsPOC@master
+    - uses: samsmithnz/DotNetTestResultsPOC@main
       with:
         fileName: ${{ github.workspace }}/TestOutput.xml
