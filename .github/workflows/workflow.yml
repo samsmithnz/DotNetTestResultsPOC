@@ -24,7 +24,7 @@ jobs:
     - name: Output results
       #if: runner.OS == 'Linux'
       #if: 0 == 1
-      #shell: pwsh
+      shell: pwsh
       run: |
         [xml]$result = Get-Content -Path ${{ github.workspace }}/TestOutput.xml
         #$result.TestRun.ResultSummary.Counters.passed
