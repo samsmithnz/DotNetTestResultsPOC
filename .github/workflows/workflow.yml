@@ -19,6 +19,7 @@ jobs:
     - name: .NET test
       run: dotnet test src/DotNetTestResultsPOC.Tests/DotNetTestResultsPOC.Tests.csproj -c Release  -l:"trx;LogFileName=${{ github.workspace }}/TestOutput.xml"
     - name: Output results
+      if: 0 == 1
       shell: pwsh
       run: |
         [xml]$result = Get-Content -Path ${{ github.workspace }}/TestOutput.xml
@@ -29,3 +30,6 @@ jobs:
         echo "- Total: $($result.TestRun.ResultSummary.Counters.total)" >> $env:GITHUB_STEP_SUMMARY
         echo "- Passed ✅: $($result.TestRun.ResultSummary.Counters.passed)" >> $env:GITHUB_STEP_SUMMARY
         echo "- Failed ❌: $($result.TestRun.ResultSummary.Counters.failed)" >> $env:GITHUB_STEP_SUMMARY
+    - uses: samsmithnz/DotNetTestResultsPOC@master
+      with:
+        fileName: ${{ github.workspace }}/TestOutput.xml
